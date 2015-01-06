@@ -12,5 +12,8 @@
     "coffee-script": "^1.8.0",
     "express": "^4.10.7",
     "morgan": "^1.5.1"
-  }
+  },
+  "scripts": {
+    "start": "coffee server.coffee"
+    }
 }
