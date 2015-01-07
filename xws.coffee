@@ -73,7 +73,7 @@ exportObj.serializedToXWS = (faction, serialized) ->
 
         if ship.title?
             try
-                (upgrade_obj[toXWSUpgrade['Title']] ?= []).push(ship.title.canonical_name ? ship.title.name.canonicalize())
+                (upgrade_obj.title ?= []).push(ship.title.canonical_name ? ship.title.name.canonicalize())
             catch e
                 console.error "Cannot add title: #{e}"
                 continue
