@@ -59,6 +59,12 @@ exportObj.serializedToXWS = (faction, serialized) ->
         for upgrade in ship.upgrades
             try
                 slot = toXWSUpgrade[upgrade.slot] ? upgrade.slot.canonicalize()
+            catch e
+                console.error "Cannot add determine slot: #{e}"
+                console.dir upgrade
+                continue
+
+            try
                 (upgrade_obj[slot] ?= []).push(upgrade.canonical_name ? upgrade.name.canonicalize())
             catch e
                 console.error "Cannot add upgrade: #{e}"

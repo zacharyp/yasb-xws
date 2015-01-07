@@ -7,6 +7,10 @@ SERIALIZATION_CODE_TO_MAP =
     'T': cards.titlesById
     'U': cards.upgradesById
 
+SERIALIZATION_CODE_TO_SLOT =
+    'M': 'mod'
+    'T': 'title'
+
 exportObj.serializedToShips = (faction, serialized) ->
     ships = []
     re = /^v(\d+)!(.*)/
@@ -102,7 +106,6 @@ fromSerialized = (version, serialized) ->
             catch e
                 ''
 
-            # We confer title addons before modification addons, to pick an arbitrary ordering.
             if conferredaddon_pairs?
                 conferredaddon_pairs = conferredaddon_pairs.split ','
             else
@@ -111,7 +114,9 @@ fromSerialized = (version, serialized) ->
             for conferredaddon_pair, i in conferredaddon_pairs
                 [ addon_type_serialized, addon_id ] = conferredaddon_pair.split '.'
                 try
-                    ship.upgrades.push(SERIALIZATION_CODE_TO_MAP[addon_type_serialized][parseInt addon_id])
+                    conferred_addon = SERIALIZATION_CODE_TO_MAP[addon_type_serialized][parseInt addon_id]
+                    conferred_addon.slot = SERIALIZATION_CODE_TO_SLOT[addon_type_serialized] unless conferred_addon.slot?
+                    ship.upgrades.push conferred_addon
                 catch e
                     ''
 
