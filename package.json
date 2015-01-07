@@ -15,5 +15,12 @@
   },
   "scripts": {
     "start": "coffee server.coffee"
-    }
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/geordanr/yasb-xws.git"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
 }
