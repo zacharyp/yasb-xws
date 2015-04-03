@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title YASB Juggler
+    link(href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
+    link(href="select2/select2.css" rel="stylesheet")
+  body
+    .container-fluid
+      .row
+        h1.col-xs-12 YASB List Juggler
+      .row
+        label(for="#tourney_id").col-xs-4 Tournament
+        input.col-xs-8#tourney_id
+      .row
+        label(for="#player_id").col-xs-4 Player
+        input.col-xs-8#player_id
+      .row
+        label(for="#player-name").col-xs-4 Or, add a new player
+        .col-xs-8
+          input.form-control#player-name(placeholder="Player name")
+      .row
+        label(for="#email").col-xs-4 TO's email
+        .col-xs-8
+          input.form-control#email(placeholder="Email used to register tournament in List Juggler (for authentication)")
+      .row
+        .col-xs-12
+          button.btn.btn-primary Add List
+    script(src="jquery/dist/jquery.min.js")
+    script(src="bootstrap/dist/js/bootstrap.min.js")
+    script(src="select2/select2.min.js")
+    script(src="yasb_xws.min.js")
+    script.
+      var juggler_api_url = '#{juggler_api_url}';
+      var last_tourney_id = '#{last_tourney_id}';
+      var last_email = '#{last_email}';
+    script
+      :coffeescript
+        $ ->
+          $('#tourney_id').val last_tourney_id
+          $('#email').val last_email
+          window.api = new ListJugglerAPI(juggler_api_url)
+          api.initSelect2()

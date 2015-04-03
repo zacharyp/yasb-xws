@@ -4,23 +4,29 @@
   "description": "YASB permalink to XWS backend",
   "main": "server.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "coffee server.coffee"
   },
   "author": "Geordan Rosario <geordan@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.12.2",
     "coffee-script": "^1.8.0",
+    "cookie-session": "^1.1.0",
     "express": "^4.10.7",
+    "jade": "^1.9.2",
     "morgan": "^1.5.1"
   },
-  "scripts": {
-    "start": "coffee server.coffee"
-  },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/geordanr/yasb-xws.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geordanr/yasb-xws.git"
   },
   "engines": {
     "node": "0.10.x"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-uglify": "^0.8.1"
   }
 }

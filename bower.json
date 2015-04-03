@@ -1,0 +1,23 @@
+{
+  "name": "xwing-xws",
+  "version": "1.0.0",
+  "homepage": "https://github.com/geordanr/yasb-xws",
+  "authors": [
+    "Geordan Rosario <geordan@gmail.com>"
+  ],
+  "description": "YASB permalink to XWS backend",
+  "main": "server.coffee",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "select2": "~3.5.2",
+    "jquery-cookie": "~1.4.1"
+  }
+}
