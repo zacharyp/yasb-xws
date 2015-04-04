@@ -12,22 +12,21 @@ html
       .row
         h1.col-xs-12 YASB List Juggler
       .row
-        label(for="#tourney_id").col-xs-4 Tournament
-        input.col-xs-8#tourney_id
+        label(for="#tourney_id").col-xs-3 Tournament
+        input.col-xs-9#tourney_id
       .row
-        label(for="#player_id").col-xs-4 Player
-        input.col-xs-8#player_id
-      .row
-        label(for="#player-name").col-xs-4 Or, add a new player
-        .col-xs-8
+        label(for="#player_id").col-xs-3 Player
+        input.col-xs-3#player_id
+        label(for="#player-name").col-xs-3 Or, add a new player
+        .col-xs-3
           input.form-control#player-name(placeholder="Player name")
       .row
-        label(for="#email").col-xs-4 TO's email
-        .col-xs-8
+        label(for="#email").col-xs-3 TO's email
+        .col-xs-9
           input.form-control#email(placeholder="Email used to register tournament in List Juggler (for authentication)")
       .row
         .col-xs-12
-          button.btn.btn-primary Add List
+          button.btn.btn-primary#add-list Add List
     script(src="jquery/dist/jquery.min.js")
     script(src="bootstrap/dist/js/bootstrap.min.js")
     script(src="select2/select2.min.js")
@@ -43,3 +42,4 @@ html
           $('#email').val last_email
           window.api = new ListJugglerAPI(juggler_api_url)
           api.initSelect2()
+          api.initHandlers()

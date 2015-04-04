@@ -102,6 +102,82 @@ exportObj.ListJugglerAPI = (function() {
     });
   };
 
+  ListJugglerAPI.prototype.initHandlers = function() {
+    return $('#add-list').click((function(_this) {
+      return function(e) {
+        if ($('#add-list').hasClass('disabled')) {
+          return;
+        }
+        $('#add-list').addClass('disabled');
+        $('#add-list').text('Submitting...');
+        return $.get("/" + window.location.search).done(function(xws) {
+          var email, player_id, player_name, tourney_id;
+          tourney_id = $('#tourney_id').val();
+          email = $('#email').val();
+          player_id = $('#player_id').val();
+          player_name = $('#player-name').val();
+          return (function(tourney_id, email, player_id, player_name) {
+            if (tourney_id !== '' && email !== '' && (player_id !== '' || player_name !== '')) {
+              return $.post(_this.url + "/api/v1/tournament/" + tourney_id + "/token", {
+                email: email
+              }).done(function(data, textStatus, jqXHR) {
+                var api_token;
+                api_token = data.api_token;
+                if (player_name !== '') {
+                  return $.ajax(_this.url + "/api/v1/tournament/" + tourney_id + "/players", {
+                    method: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                      api_token: api_token,
+                      players: [
+                        {
+                          name: player_name,
+                          xws: xws
+                        }
+                      ]
+                    })
+                  }).done(function() {
+                    return _this.updateSessionAndRedirect(tourney_id, email);
+                  });
+                } else {
+                  return $.ajax(_this.url + "/api/v1/tournament/" + tourney_id + "/player/" + player_id, {
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                      api_token: api_token,
+                      xws: xws
+                    })
+                  }).done(function() {
+                    return _this.updateSessionAndRedirect(tourney_id, email);
+                  });
+                }
+              }).fail(function(jqXHR, textStatus, errorThrown) {
+                return alert("Access denied: wrong email - " + errorThrown);
+              });
+            }
+          })(tourney_id, email, player_id, player_name);
+        }).fail(function() {
+          return alert("Invalid squadron");
+        });
+      };
+    })(this));
+  };
+
+  ListJugglerAPI.prototype.updateSessionAndRedirect = function(tourney_id, email) {
+    return $.ajax('/juggler', {
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        tourney_id: tourney_id,
+        email: email
+      })
+    }).done((function(_this) {
+      return function() {
+        return window.location.href = _this.url + "/get_tourney_details?tourney_id=" + tourney_id;
+      };
+    })(this));
+  };
+
   return ListJugglerAPI;
 
 })();

@@ -8,7 +8,7 @@ app = exports.app = express()
 
 app.set 'port', process.env.PORT ? (if 'production' == app.get('env') then 80 else 3000)
 app.set 'view engine', 'jade'
-app.set 'juggler_api_url', 'http://localhost:5000'
+app.set 'juggler_api_url', process.env.JUGGLER_API_URL ? 'http://localhost:5000'
 
 app.use morgan('dev')
 app.use session
@@ -30,16 +30,20 @@ app.get '/', (req, res) ->
 app.get '/juggler', (req, res) ->
     if req.query.f? and req.query.d?
         res.render 'juggler',
-            last_tourney_id: req.session.tourney_id ? 286
-            last_email: req.session.email ? 'test@example.com'
+            last_tourney_id: req.session.tourney_id ? ''
+            last_email: req.session.email ? ''
             juggler_api_url: app.get 'juggler_api_url'
     else
         res.status(400).json
             message: "Put YASB permalink query string in URL"
 
 app.post '/juggler', (req, res) ->
-    xws_obj = xws.serializedToXWS req.body.f, req.body.d
-    xws_obj.vendor.yasb.link = "https://geordanr.github.io/xwing#{req.originalUrl}"
+    req.session.tourney_id = req.body.tourney_id
+    req.session.email = req.body.email
+
+    res.json
+        success: true
+
 
 app.listen app.get('port')
 console.log "Listening on port #{app.get 'port'}..."
