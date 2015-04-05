@@ -4,6 +4,9 @@ class exportObj.ListJugglerAPI
     constructor: (url) ->
         @url = url
 
+        @initSelect2()
+        @initHandlers()
+
     initSelect2: ->
         $('#tourney_id').select2
             placeholder: "Select a tournament"
@@ -27,15 +30,18 @@ class exportObj.ListJugglerAPI
                 if init_tourney_id != ''
                     $.get("#{@url}/api/v1/tournament/#{parseInt init_tourney_id}")
                     .done (data) ->
+                        $('#player_id').select2 'enable', true
                         cb
                             id: init_tourney_id
                             text: "#{data.tournament.name} / #{data.tournament.date}"
-
-        $('#tourney_id').on 'change', (e) ->
-            $('#player_id').select2 'data', null
+                    .fail ->
+                        $('#tourney_id').select2 'data', null
+                    .always ->
+                        $('#tourney_id').select2 'enable', true
 
         $('#player_id').select2
-            placeholder: "Select player"
+            placeholder: "Select already registered player"
+            allowClear: true
             query: (q) =>
                 $.get("#{@url}/api/v1/tournament/#{$('#tourney_id').val()}/players")
                 .done (data) ->
@@ -46,19 +52,28 @@ class exportObj.ListJugglerAPI
                     q.callback
                         results: results
 
+        $('#player_id').select2 'enable', false
+        $('#tourney_id').select2 'enable', false
+
     initHandlers: ->
+        $('#tourney_id').on 'change', (e) ->
+            $('#player_id').select2 'data', null
+            $('#player_id').select2 'enable', true
+
         $('#add-list').click (e) =>
             return if $('#add-list').hasClass 'disabled'
             $('#add-list').addClass 'disabled'
             $('#add-list').text 'Submitting...'
+            $('.has-error').removeClass 'has-error has-feedback'
+            hideAlert()
 
             # generate XWS
             $.get("/#{window.location.search}")
             .done (xws) =>
                 tourney_id = $('#tourney_id').val()
-                email = $('#email').val()
+                email = $.trim $('#email').val()
                 player_id = $('#player_id').val()
-                player_name = $('#player-name').val()
+                player_name = $.trim $('#player_name').val()
                 do (tourney_id, email, player_id, player_name) =>
                     if tourney_id != '' and email != '' and (player_id != '' or player_name != '')
                         # Check token validity
@@ -82,6 +97,10 @@ class exportObj.ListJugglerAPI
                                         ]
                                 .done =>
                                     @updateSessionAndRedirect tourney_id, email
+                                .fail (jqXHR, textStatus, errorThrown) ->
+                                    showAlert "Could not add new player #{player_name}: #{errorThrown}"
+                                .always ->
+                                    resetSubmitButton()
                             else
                                 # update existing player
                                 $.ajax "#{@url}/api/v1/tournament/#{tourney_id}/player/#{player_id}",
@@ -92,11 +111,35 @@ class exportObj.ListJugglerAPI
                                         xws: xws
                                 .done =>
                                     @updateSessionAndRedirect tourney_id, email
+                                .fail (jqXHR, textStatus, errorThrown) ->
+                                    showAlert "Could not add list: #{errorThrown}"
+                                .always ->
+                                    resetSubmitButton()
                         .fail (jqXHR, textStatus, errorThrown) ->
                             # bad email
-                            alert "Access denied: wrong email - #{errorThrown}"
+                            $('#email').parent().addClass 'has-error has-feedback'
+                            showAlert 'Incorrect email for that tournament.'
+                        .always ->
+                            resetSubmitButton()
+                    else
+                        switch
+                            when tourney_id == ''
+                                showAlert 'No tournament selected.'
+                                $('label[for="#tourney_id"]').parent().addClass('has-error')
+                            when email == ''
+                                showAlert 'No email entered.'
+                                $('#email').parent().addClass 'has-error has-feedback'
+                            when player_id == '' or player_name == ''
+                                showAlert 'Player not selected and no player name entered.'
+                                $('#player_name').parent().addClass 'has-error has-feedback'
+                                $('label[for="#player_id"]').parent().addClass('has-error')
+                            else
+                                throw new Error('Uncaught condition')
+                        resetSubmitButton()
             .fail ->
-                alert "Invalid squadron"
+                showAlert 'Could not convert squadron to XWS format.'
+            .always ->
+                resetSubmitButton()
 
     updateSessionAndRedirect: (tourney_id, email) ->
         # save tourney id and email
@@ -108,3 +151,14 @@ class exportObj.ListJugglerAPI
                 email: email
         .done =>
             window.location.href = "#{@url}/get_tourney_details?tourney_id=#{tourney_id}"
+
+hideAlert = ->
+    $('#alert').addClass 'hidden'
+
+showAlert = (text) ->
+    $('#alert').text text
+    $('#alert').removeClass 'hidden'
+
+resetSubmitButton = ->
+    $('#add-list').text 'Add List'
+    $('#add-list').removeClass 'disabled'

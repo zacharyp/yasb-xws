@@ -1,4 +1,4 @@
-var exportObj,
+var exportObj, hideAlert, resetSubmitButton, showAlert,
   hasProp = {}.hasOwnProperty;
 
 exportObj = typeof exports !== "undefined" && exports !== null ? exports : this;
@@ -6,6 +6,8 @@ exportObj = typeof exports !== "undefined" && exports !== null ? exports : this;
 exportObj.ListJugglerAPI = (function() {
   function ListJugglerAPI(url) {
     this.url = url;
+    this.initSelect2();
+    this.initHandlers();
   }
 
   ListJugglerAPI.prototype.initSelect2 = function() {
@@ -44,20 +46,23 @@ exportObj.ListJugglerAPI = (function() {
           init_tourney_id = elem.val();
           if (init_tourney_id !== '') {
             return $.get(_this.url + "/api/v1/tournament/" + (parseInt(init_tourney_id))).done(function(data) {
+              $('#player_id').select2('enable', true);
               return cb({
                 id: init_tourney_id,
                 text: data.tournament.name + " / " + data.tournament.date
               });
+            }).fail(function() {
+              return $('#tourney_id').select2('data', null);
+            }).always(function() {
+              return $('#tourney_id').select2('enable', true);
             });
           }
         };
       })(this)
     });
-    $('#tourney_id').on('change', function(e) {
-      return $('#player_id').select2('data', null);
-    });
-    return $('#player_id').select2({
-      placeholder: "Select player",
+    $('#player_id').select2({
+      placeholder: "Select already registered player",
+      allowClear: true,
       query: (function(_this) {
         return function(q) {
           return $.get(_this.url + "/api/v1/tournament/" + ($('#tourney_id').val()) + "/players").done(function(data) {
@@ -100,9 +105,15 @@ exportObj.ListJugglerAPI = (function() {
         };
       })(this)
     });
+    $('#player_id').select2('enable', false);
+    return $('#tourney_id').select2('enable', false);
   };
 
   ListJugglerAPI.prototype.initHandlers = function() {
+    $('#tourney_id').on('change', function(e) {
+      $('#player_id').select2('data', null);
+      return $('#player_id').select2('enable', true);
+    });
     return $('#add-list').click((function(_this) {
       return function(e) {
         if ($('#add-list').hasClass('disabled')) {
@@ -110,12 +121,14 @@ exportObj.ListJugglerAPI = (function() {
         }
         $('#add-list').addClass('disabled');
         $('#add-list').text('Submitting...');
+        $('.has-error').removeClass('has-error has-feedback');
+        hideAlert();
         return $.get("/" + window.location.search).done(function(xws) {
           var email, player_id, player_name, tourney_id;
           tourney_id = $('#tourney_id').val();
-          email = $('#email').val();
+          email = $.trim($('#email').val());
           player_id = $('#player_id').val();
-          player_name = $('#player-name').val();
+          player_name = $.trim($('#player_name').val());
           return (function(tourney_id, email, player_id, player_name) {
             if (tourney_id !== '' && email !== '' && (player_id !== '' || player_name !== '')) {
               return $.post(_this.url + "/api/v1/tournament/" + tourney_id + "/token", {
@@ -138,6 +151,10 @@ exportObj.ListJugglerAPI = (function() {
                     })
                   }).done(function() {
                     return _this.updateSessionAndRedirect(tourney_id, email);
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
+                    return showAlert("Could not add new player " + player_name + ": " + errorThrown);
+                  }).always(function() {
+                    return resetSubmitButton();
                   });
                 } else {
                   return $.ajax(_this.url + "/api/v1/tournament/" + tourney_id + "/player/" + player_id, {
@@ -149,15 +166,43 @@ exportObj.ListJugglerAPI = (function() {
                     })
                   }).done(function() {
                     return _this.updateSessionAndRedirect(tourney_id, email);
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
+                    return showAlert("Could not add list: " + errorThrown);
+                  }).always(function() {
+                    return resetSubmitButton();
                   });
                 }
               }).fail(function(jqXHR, textStatus, errorThrown) {
-                return alert("Access denied: wrong email - " + errorThrown);
+                $('#email').parent().addClass('has-error has-feedback');
+                return showAlert('Incorrect email for that tournament.');
+              }).always(function() {
+                return resetSubmitButton();
               });
+            } else {
+              switch (false) {
+                case tourney_id !== '':
+                  showAlert('No tournament selected.');
+                  $('label[for="#tourney_id"]').parent().addClass('has-error');
+                  break;
+                case email !== '':
+                  showAlert('No email entered.');
+                  $('#email').parent().addClass('has-error has-feedback');
+                  break;
+                case !(player_id === '' || player_name === ''):
+                  showAlert('Player not selected and no player name entered.');
+                  $('#player_name').parent().addClass('has-error has-feedback');
+                  $('label[for="#player_id"]').parent().addClass('has-error');
+                  break;
+                default:
+                  throw new Error('Uncaught condition');
+              }
+              return resetSubmitButton();
             }
           })(tourney_id, email, player_id, player_name);
         }).fail(function() {
-          return alert("Invalid squadron");
+          return showAlert('Could not convert squadron to XWS format.');
+        }).always(function() {
+          return resetSubmitButton();
         });
       };
     })(this));
@@ -181,5 +226,19 @@ exportObj.ListJugglerAPI = (function() {
   return ListJugglerAPI;
 
 })();
+
+hideAlert = function() {
+  return $('#alert').addClass('hidden');
+};
+
+showAlert = function(text) {
+  $('#alert').text(text);
+  return $('#alert').removeClass('hidden');
+};
+
+resetSubmitButton = function() {
+  $('#add-list').text('Add List');
+  return $('#add-list').removeClass('disabled');
+};
 
 //# sourceMappingURL=yasb_xws.js.map
