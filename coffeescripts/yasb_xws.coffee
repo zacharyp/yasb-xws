@@ -63,7 +63,9 @@ class exportObj.ListJugglerAPI
         $('#add-list').click (e) =>
             return if $('#add-list').hasClass 'disabled'
             $('#add-list').addClass 'disabled'
-            $('#add-list').text 'Submitting...'
+            $('#add-list').text ''
+            $('#add-list').append """<i class="fa fa-spin fa-circle-o-notch"></i>"""
+            $('#add-list').append "&nbsp;Submitting..."
             $('.has-error').removeClass 'has-error has-feedback'
             hideAlert()
 

@@ -18,6 +18,7 @@
   "dependencies": {
     "bootstrap": "~3.3.4",
     "select2": "~3.5.2",
-    "jquery-cookie": "~1.4.1"
+    "jquery-cookie": "~1.4.1",
+    "fontawesome": "~4.3.0"
   }
 }
