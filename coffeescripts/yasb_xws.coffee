@@ -26,18 +26,18 @@ class exportObj.ListJugglerAPI
                             text: "#{info.name} / #{info.venue} / #{info.date}"
                     results: result_ary
             initSelection: (elem, cb) =>
+                $(elem).select2 'enable', false
                 init_tourney_id = elem.val()
-                if init_tourney_id != ''
-                    $.get("#{@url}/api/v1/tournament/#{parseInt init_tourney_id}")
-                    .done (data) ->
-                        $('#player_id').select2 'enable', true
-                        cb
-                            id: init_tourney_id
-                            text: "#{data.tournament.name} / #{data.tournament.date}"
-                    .fail ->
-                        $('#tourney_id').select2 'data', null
-                    .always ->
-                        $('#tourney_id').select2 'enable', true
+                $.get("#{@url}/api/v1/tournament/#{parseInt init_tourney_id}")
+                .done (data) ->
+                    $('#player_id').select2 'enable', true
+                    cb
+                        id: init_tourney_id
+                        text: "#{data.tournament.name} / #{data.tournament.date}"
+                .fail ->
+                    $('#tourney_id').select2 'data', null
+                .always ->
+                    $('#tourney_id').select2 'enable', true
 
         $('#player_id').select2
             placeholder: "Select already registered player"
@@ -53,7 +53,6 @@ class exportObj.ListJugglerAPI
                         results: results
 
         $('#player_id').select2 'enable', false
-        $('#tourney_id').select2 'enable', false
 
     initHandlers: ->
         $('#tourney_id').on 'change', (e) ->
