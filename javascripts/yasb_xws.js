@@ -43,20 +43,19 @@ exportObj.ListJugglerAPI = (function() {
       initSelection: (function(_this) {
         return function(elem, cb) {
           var init_tourney_id;
+          $(elem).select2('enable', false);
           init_tourney_id = elem.val();
-          if (init_tourney_id !== '') {
-            return $.get(_this.url + "/api/v1/tournament/" + (parseInt(init_tourney_id))).done(function(data) {
-              $('#player_id').select2('enable', true);
-              return cb({
-                id: init_tourney_id,
-                text: data.tournament.name + " / " + data.tournament.date
-              });
-            }).fail(function() {
-              return $('#tourney_id').select2('data', null);
-            }).always(function() {
-              return $('#tourney_id').select2('enable', true);
+          return $.get(_this.url + "/api/v1/tournament/" + (parseInt(init_tourney_id))).done(function(data) {
+            $('#player_id').select2('enable', true);
+            return cb({
+              id: init_tourney_id,
+              text: data.tournament.name + " / " + data.tournament.date
             });
-          }
+          }).fail(function() {
+            return $('#tourney_id').select2('data', null);
+          }).always(function() {
+            return $('#tourney_id').select2('enable', true);
+          });
         };
       })(this)
     });
@@ -105,8 +104,7 @@ exportObj.ListJugglerAPI = (function() {
         };
       })(this)
     });
-    $('#player_id').select2('enable', false);
-    return $('#tourney_id').select2('enable', false);
+    return $('#player_id').select2('enable', false);
   };
 
   ListJugglerAPI.prototype.initHandlers = function() {
@@ -120,7 +118,9 @@ exportObj.ListJugglerAPI = (function() {
           return;
         }
         $('#add-list').addClass('disabled');
-        $('#add-list').text('Submitting...');
+        $('#add-list').text('');
+        $('#add-list').append("<i class=\"fa fa-spin fa-circle-o-notch\"></i>");
+        $('#add-list').append("&nbsp;Submitting...");
         $('.has-error').removeClass('has-error has-feedback');
         hideAlert();
         return $.get("/" + window.location.search).done(function(xws) {
