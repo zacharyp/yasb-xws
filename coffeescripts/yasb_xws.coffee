@@ -12,7 +12,7 @@ class exportObj.ListJugglerAPI
             placeholder: "Select a tournament"
             minimumInputLength: 1
             ajax:
-                url: "#{@url}/api/v1/search/tournaments"
+                url: "/api/v1/search/tournaments"
                 type: 'POST'
                 dataType: 'json'
                 quietMillis: 250
@@ -25,10 +25,10 @@ class exportObj.ListJugglerAPI
                             id: parseInt tourney_id
                             text: "#{info.name} / #{info.venue} / #{info.date}"
                     results: result_ary
-            initSelection: (elem, cb) =>
+            initSelection: (elem, cb) ->
                 $(elem).select2 'enable', false
                 init_tourney_id = elem.val()
-                $.get("#{@url}/api/v1/tournament/#{parseInt init_tourney_id}")
+                $.get("/api/v1/tournament/#{parseInt init_tourney_id}")
                 .done (data) ->
                     $('#player_id').select2 'enable', true
                     cb
@@ -42,8 +42,8 @@ class exportObj.ListJugglerAPI
         $('#player_id').select2
             placeholder: "Select already registered player"
             allowClear: true
-            query: (q) =>
-                $.get("#{@url}/api/v1/tournament/#{$('#tourney_id').val()}/players")
+            query: (q) ->
+                $.get("/api/v1/tournament/#{$('#tourney_id').val()}/players")
                 .done (data) ->
                     if q.term == ''
                         results = ({id: player.id, text: player.name} for player in data.players)
@@ -78,14 +78,14 @@ class exportObj.ListJugglerAPI
                 do (tourney_id, email, player_id, player_name) =>
                     if tourney_id != '' and email != '' and (player_id != '' or player_name != '')
                         # Check token validity
-                        $.post("#{@url}/api/v1/tournament/#{tourney_id}/token", {email: email})
+                        $.post("/api/v1/tournament/#{tourney_id}/token", {email: email})
                         .done (data, textStatus, jqXHR) =>
                             # token is good, post it
                             api_token = data.api_token
 
                             if player_name != ''
                                 # add new player
-                                $.ajax "#{@url}/api/v1/tournament/#{tourney_id}/players",
+                                $.ajax "/api/v1/tournament/#{tourney_id}/players",
                                     method: 'PUT'
                                     contentType: 'application/json'
                                     data: JSON.stringify
@@ -104,7 +104,7 @@ class exportObj.ListJugglerAPI
                                     resetSubmitButton()
                             else
                                 # update existing player
-                                $.ajax "#{@url}/api/v1/tournament/#{tourney_id}/player/#{player_id}",
+                                $.ajax "/api/v1/tournament/#{tourney_id}/player/#{player_id}",
                                     method: 'POST'
                                     contentType: 'application/json'
                                     data: JSON.stringify

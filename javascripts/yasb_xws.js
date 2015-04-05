@@ -15,7 +15,7 @@ exportObj.ListJugglerAPI = (function() {
       placeholder: "Select a tournament",
       minimumInputLength: 1,
       ajax: {
-        url: this.url + "/api/v1/search/tournaments",
+        url: "/api/v1/search/tournaments",
         type: 'POST',
         dataType: 'json',
         quietMillis: 250,
@@ -40,69 +40,65 @@ exportObj.ListJugglerAPI = (function() {
           };
         }
       },
-      initSelection: (function(_this) {
-        return function(elem, cb) {
-          var init_tourney_id;
-          $(elem).select2('enable', false);
-          init_tourney_id = elem.val();
-          return $.get(_this.url + "/api/v1/tournament/" + (parseInt(init_tourney_id))).done(function(data) {
-            $('#player_id').select2('enable', true);
-            return cb({
-              id: init_tourney_id,
-              text: data.tournament.name + " / " + data.tournament.date
-            });
-          }).fail(function() {
-            return $('#tourney_id').select2('data', null);
-          }).always(function() {
-            return $('#tourney_id').select2('enable', true);
+      initSelection: function(elem, cb) {
+        var init_tourney_id;
+        $(elem).select2('enable', false);
+        init_tourney_id = elem.val();
+        return $.get("/api/v1/tournament/" + (parseInt(init_tourney_id))).done(function(data) {
+          $('#player_id').select2('enable', true);
+          return cb({
+            id: init_tourney_id,
+            text: data.tournament.name + " / " + data.tournament.date
           });
-        };
-      })(this)
+        }).fail(function() {
+          return $('#tourney_id').select2('data', null);
+        }).always(function() {
+          return $('#tourney_id').select2('enable', true);
+        });
+      }
     });
     $('#player_id').select2({
       placeholder: "Select already registered player",
       allowClear: true,
-      query: (function(_this) {
-        return function(q) {
-          return $.get(_this.url + "/api/v1/tournament/" + ($('#tourney_id').val()) + "/players").done(function(data) {
-            var player, results;
-            if (q.term === '') {
-              results = (function() {
-                var i, len, ref, results1;
-                ref = data.players;
-                results1 = [];
-                for (i = 0, len = ref.length; i < len; i++) {
-                  player = ref[i];
+      query: function(q) {
+        return $.get("/api/v1/tournament/" + ($('#tourney_id').val()) + "/players").done(function(data) {
+          var player, results;
+          if (q.term === '') {
+            results = (function() {
+              var i, len, ref, results1;
+              ref = data.players;
+              results1 = [];
+              for (i = 0, len = ref.length; i < len; i++) {
+                player = ref[i];
+                results1.push({
+                  id: player.id,
+                  text: player.name
+                });
+              }
+              return results1;
+            })();
+          } else {
+            results = (function() {
+              var i, len, ref, results1;
+              ref = data.players;
+              results1 = [];
+              for (i = 0, len = ref.length; i < len; i++) {
+                player = ref[i];
+                if (player.name.toLocaleLowerCase().indexOf(q.term.toLocaleLowerCase()) !== -1) {
                   results1.push({
                     id: player.id,
                     text: player.name
                   });
                 }
-                return results1;
-              })();
-            } else {
-              results = (function() {
-                var i, len, ref, results1;
-                ref = data.players;
-                results1 = [];
-                for (i = 0, len = ref.length; i < len; i++) {
-                  player = ref[i];
-                  if (player.name.toLocaleLowerCase().indexOf(q.term.toLocaleLowerCase()) !== -1) {
-                    results1.push({
-                      id: player.id,
-                      text: player.name
-                    });
-                  }
-                }
-                return results1;
-              })();
-            }
-            return q.callback({
-              results: results
-            });
+              }
+              return results1;
+            })();
+          }
+          return q.callback({
+            results: results
           });
-        };
-      })(this)
+        });
+      }
     });
     return $('#player_id').select2('enable', false);
   };
@@ -131,13 +127,13 @@ exportObj.ListJugglerAPI = (function() {
           player_name = $.trim($('#player_name').val());
           return (function(tourney_id, email, player_id, player_name) {
             if (tourney_id !== '' && email !== '' && (player_id !== '' || player_name !== '')) {
-              return $.post(_this.url + "/api/v1/tournament/" + tourney_id + "/token", {
+              return $.post("/api/v1/tournament/" + tourney_id + "/token", {
                 email: email
               }).done(function(data, textStatus, jqXHR) {
                 var api_token;
                 api_token = data.api_token;
                 if (player_name !== '') {
-                  return $.ajax(_this.url + "/api/v1/tournament/" + tourney_id + "/players", {
+                  return $.ajax("/api/v1/tournament/" + tourney_id + "/players", {
                     method: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -157,7 +153,7 @@ exportObj.ListJugglerAPI = (function() {
                     return resetSubmitButton();
                   });
                 } else {
-                  return $.ajax(_this.url + "/api/v1/tournament/" + tourney_id + "/player/" + player_id, {
+                  return $.ajax("/api/v1/tournament/" + tourney_id + "/player/" + player_id, {
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({

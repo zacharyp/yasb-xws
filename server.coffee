@@ -2,6 +2,7 @@ express = require 'express'
 morgan = require 'morgan'
 session = require 'cookie-session'
 bodyparser = require 'body-parser'
+request = require 'request'
 xws = require './xws'
 
 app = exports.app = express()
@@ -9,6 +10,12 @@ app = exports.app = express()
 app.set 'port', process.env.PORT ? (if 'production' == app.get('env') then 80 else 3000)
 app.set 'view engine', 'jade'
 app.set 'juggler_api_url', process.env.JUGGLER_API_URL ? 'http://localhost:5000'
+
+# Proxy API calls to List Juggler
+# This MUST be the first middleware!
+app.use '/api', (req, res) ->
+    proxy_url = "#{app.get 'juggler_api_url'}#{req.originalUrl}"
+    req.pipe(request(proxy_url)).pipe(res)
 
 app.use morgan('dev')
 app.use session
@@ -43,7 +50,6 @@ app.post '/juggler', (req, res) ->
 
     res.json
         success: true
-
 
 app.listen app.get('port')
 console.log "Listening on port #{app.get 'port'}..."
