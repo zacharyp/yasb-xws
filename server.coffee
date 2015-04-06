@@ -15,7 +15,11 @@ app.set 'juggler_api_url', process.env.JUGGLER_API_URL ? 'http://localhost:5000'
 # This MUST be the first middleware!
 app.use '/api', (req, res) ->
     proxy_url = "#{app.get 'juggler_api_url'}#{req.originalUrl}"
-    req.pipe(request(proxy_url)).pipe(res)
+    proxy_req = request(proxy_url)
+        .on 'error', (err) ->
+            res.status(500).json
+                error: "Could not proxy to API: #{err}"
+    req.pipe(proxy_req).pipe(res)
 
 app.use morgan('dev')
 app.use session
