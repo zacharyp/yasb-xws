@@ -20,7 +20,10 @@ html
         pre.col-xs-12= list_info
       .row
         .col-xs-12
-          label.control-label(for="#tourney_id") Tournament
+          label.control-label(for="#tourney_id")
+            | Tournament (or 
+            a(href="#{juggler_api_url}/new", target="_blank") create a new one
+            | )
       .row
         .col-xs-12
           input#tourney_id
