@@ -64,7 +64,7 @@ class exportObj.ListJugglerAPI
             $('#add-list').addClass 'disabled'
             $('#add-list').text ''
             $('#add-list').append """<i class="fa fa-spin fa-circle-o-notch"></i>"""
-            $('#add-list').append "&nbsp;Submitting..."
+            $('#add-list').append "&nbsp;Submitting List..."
             $('.has-error').removeClass 'has-error has-feedback'
             hideAlert()
 
@@ -161,5 +161,5 @@ showAlert = (text) ->
     $('#alert').removeClass 'hidden'
 
 resetSubmitButton = ->
-    $('#add-list').text 'Add List'
+    $('#add-list').text 'Submit List to List Juggler'
     $('#add-list').removeClass 'disabled'

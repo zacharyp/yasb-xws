@@ -116,7 +116,7 @@ exportObj.ListJugglerAPI = (function() {
         $('#add-list').addClass('disabled');
         $('#add-list').text('');
         $('#add-list').append("<i class=\"fa fa-spin fa-circle-o-notch\"></i>");
-        $('#add-list').append("&nbsp;Submitting...");
+        $('#add-list').append("&nbsp;Submitting List...");
         $('.has-error').removeClass('has-error has-feedback');
         hideAlert();
         return $.get("/" + window.location.search).done(function(xws) {

@@ -40,10 +40,12 @@ app.get '/', (req, res) ->
 
 app.get '/juggler', (req, res) ->
     if req.query.f? and req.query.d?
+        xws_obj = xws.serializedToXWS req.query.f, req.query.d
         res.render 'juggler',
             last_tourney_id: req.session.tourney_id ? ''
             last_email: req.session.email ? ''
             juggler_api_url: app.get 'juggler_api_url'
+            list_info: "(#{xws_obj.faction}) #{(pilot.name for pilot in xws_obj.pilots).join ', '}"
     else
         res.status(400).json
             message: "Put YASB permalink query string in URL"

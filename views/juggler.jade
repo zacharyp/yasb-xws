@@ -4,7 +4,7 @@ html
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title YASB Juggler
+    title YASB to List Juggler Import
     link(href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
     link(href="select2/select2.css" rel="stylesheet")
     link(href="fontawesome/css/font-awesome.min.css" rel="stylesheet")
@@ -14,6 +14,10 @@ html
         h1.col-xs-12 Juggle It!
       .row
         .col-xs-12.alert.alert-danger.hidden#alert
+      .row
+        b.col-xs-12 XWS Pilot Summary
+      .row
+        pre.col-xs-12= list_info
       .row
         .col-xs-12
           label.control-label(for="#tourney_id") Tournament
@@ -36,7 +40,7 @@ html
           input.form-control#email(placeholder="Email used to register tournament in List Juggler (for authentication)")
       .row
         .col-xs-12
-          button.btn.btn-primary#add-list(style="margin-top: 10px;") Add List
+          button.btn.btn-block.btn-primary#add-list(style="margin-top: 10px;") Submit List to List Juggler
     script(src="jquery/dist/jquery.min.js")
     script(src="bootstrap/dist/js/bootstrap.min.js")
     script(src="select2/select2.min.js")
