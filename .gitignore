@@ -1,3 +1,4 @@
 *.swp
 _vimrc_local.vim
 coffeelint.json
+node_modules
