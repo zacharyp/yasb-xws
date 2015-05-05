@@ -233,7 +233,7 @@ showAlert = function(text) {
 };
 
 resetSubmitButton = function() {
-  $('#add-list').text('Add List');
+  $('#add-list').text('Submit List to List Juggler');
   return $('#add-list').removeClass('disabled');
 };
 
