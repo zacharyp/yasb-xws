@@ -1,3 +1,5 @@
+path = require 'path'
+childProcess = require 'child_process'
 express = require 'express'
 morgan = require 'morgan'
 session = require 'cookie-session'
@@ -37,6 +39,21 @@ app.get '/', (req, res) ->
     else
         res.json
             message: "Put YASB permalink query string in URL"
+
+app.post '/', (req, res) ->
+    casper_bin_path = path.join __dirname, 'node_modules', '.bin', 'casperjs'
+    child_args = [
+        path.join(__dirname, 'headless.coffee'),
+    ]
+    child = childProcess.execFile casper_bin_path, child_args, (err, stdout, stderr) ->
+        if err?
+            res.status(400).json
+                message: err
+        else
+            res.json
+                url: stdout.trim()
+    child.stdin.write JSON.stringify(req.body)
+    child.stdin.end()
 
 app.get '/juggler', (req, res) ->
     if req.query.f? and req.query.d?
