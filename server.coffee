@@ -5,6 +5,7 @@ morgan = require 'morgan'
 session = require 'cookie-session'
 bodyparser = require 'body-parser'
 request = require 'request'
+cors = require 'cors'
 xws = require './xws'
 
 app = exports.app = express()
@@ -23,11 +24,7 @@ app.use '/api', (req, res) ->
                 error: "Could not proxy to API: #{err}"
     req.pipe(proxy_req).pipe(res)
 
-app.use (req, res, next) ->
-    res.header "Access-Control-Allow-Origin", "*"
-    res.header "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"
-    next()
-
+app.use cors()
 app.use morgan('dev')
 app.use session
     secret: process.env.SECRET ? 'dev'
