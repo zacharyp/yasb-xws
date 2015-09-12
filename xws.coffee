@@ -1,14 +1,18 @@
 cards = require('./xwing/coffeescripts/cards-common').basicCardData()
 permalink = require './permalink'
 
+XWS_VERSION = '0.3.0'
+
 fromXWSFaction =
+    'rebel': 'Rebel Alliance'
     'rebels': 'Rebel Alliance'
     'empire': 'Galactic Empire'
+    'imperial': 'Galactic Empire'
     'scum': 'Scum and Villainy'
 
 toXWSFaction =
-    'Rebel Alliance': 'rebels'
-    'Galactic Empire': 'empire'
+    'Rebel Alliance': 'rebel'
+    'Galactic Empire': 'imperial'
     'Scum and Villainy': 'scum'
 
 toXWSUpgrade =
@@ -36,7 +40,7 @@ exportObj.serializedToXWS = (faction, serialized) ->
                 builder: '(Yet Another) X-Wing Miniatures Squad Builder'
                 builder_url: 'https://geordanr.github.io/xwing'
                 link: 'https://geordanr.github.io/xwing'
-        version: '0.2.0'
+        version: XWS_VERSION
 
     for ship in permalink.serializedToShips faction, serialized
         continue unless ship?.pilot?
