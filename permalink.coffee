@@ -6,10 +6,12 @@ SERIALIZATION_CODE_TO_MAP =
     'M': cards.modificationsById
     'T': cards.titlesById
     'U': cards.upgradesById
+    'u': cards.upgradesById
 
 SERIALIZATION_CODE_TO_SLOT =
     'M': 'mod'
     'T': 'title'
+    'u': 'upgrade'
 
 exportObj.serializedToShips = (faction, serialized) ->
     ships = []
