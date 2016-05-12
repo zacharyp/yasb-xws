@@ -49,6 +49,7 @@ app.post '/', (req, res) ->
     ]
     child = childProcess.execFile casper_bin_path, child_args, (err, stdout, stderr) ->
         if err?
+            console.error(err)
             res.status(400).json
                 message: err
         else
