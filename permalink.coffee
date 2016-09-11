@@ -4,13 +4,16 @@ exportObj = exports ? this
 
 SERIALIZATION_CODE_TO_MAP =
     'M': cards.modificationsById
+    'm': cards.modificationsById
     'T': cards.titlesById
     'U': cards.upgradesById
     'u': cards.upgradesById
 
 SERIALIZATION_CODE_TO_SLOT =
     'M': 'mod'
+    'm': 'mod'
     'T': 'title'
+    'U': 'upgrade'
     'u': 'upgrade'
 
 exportObj.serializedToShips = (faction, serialized) ->
