@@ -35,7 +35,7 @@ app.use bodyparser.json()
 
 app.get '/', (req, res) ->
     if req.query.f? and req.query.d?
-        xws_obj = xws.serializedToXWS req.query.f, req.query.d
+        xws_obj = xws.serializedToXWS req.query.f, req.query.d, req.query.sn
         xws_obj.vendor.yasb.link = "https://geordanr.github.io/xwing#{req.originalUrl}"
         res.json xws_obj
     else

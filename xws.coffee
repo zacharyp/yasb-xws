@@ -31,7 +31,7 @@ fromXWSUpgrade =
 
 exportObj = exports ? this
 
-exportObj.serializedToXWS = (faction, serialized) ->
+exportObj.serializedToXWS = (faction, serialized, name) ->
     xws =
         faction: toXWSFaction[faction]
         pilots: []
@@ -41,6 +41,9 @@ exportObj.serializedToXWS = (faction, serialized) ->
                 builder_url: 'https://geordanr.github.io/xwing'
                 link: 'https://geordanr.github.io/xwing'
         version: XWS_VERSION
+
+    if name?.length and name != 'Unnamed Squadron'
+      xws.name = name
 
     for ship in permalink.serializedToShips faction, serialized
         continue unless ship?.pilot?
