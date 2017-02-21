@@ -42,7 +42,7 @@ exportObj.serializedToXWS = (faction, serialized, name) ->
                 link: 'https://geordanr.github.io/xwing'
         version: XWS_VERSION
 
-    if name?.length and name != 'Unnamed Squadron'
+    if name?.length and ['Unnamed Squadron', 'New Squadron'].indexOf(name) == -1
       xws.name = name
 
     for ship in permalink.serializedToShips faction, serialized
