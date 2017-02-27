@@ -45,7 +45,7 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
     if name?.length and ['Unnamed Squadron', 'New Squadron'].indexOf(name) == -1
       xws.name = name
 
-    if obstacles
+    if obstacles?
       obs = obstacles.split(',')
       if obs.length == 3
         xws.obstacles = obs
