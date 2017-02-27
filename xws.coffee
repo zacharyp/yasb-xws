@@ -31,7 +31,7 @@ fromXWSUpgrade =
 
 exportObj = exports ? this
 
-exportObj.serializedToXWS = (faction, serialized, name) ->
+exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
     xws =
         faction: toXWSFaction[faction]
         pilots: []
@@ -44,6 +44,11 @@ exportObj.serializedToXWS = (faction, serialized, name) ->
 
     if name?.length and ['Unnamed Squadron', 'New Squadron'].indexOf(name) == -1
       xws.name = name
+
+    if obstacles
+      obs = obstacles.split(',')
+      if obs.length == 3
+        xws.obstacles = obs
 
     for ship in permalink.serializedToShips faction, serialized
         continue unless ship?.pilot?
