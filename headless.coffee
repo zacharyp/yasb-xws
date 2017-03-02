@@ -1,5 +1,6 @@
 casper = require('casper').create
     logLevel: 'debug'
+    timeout: 10000
     verbose: true
 system = require('system')
 
