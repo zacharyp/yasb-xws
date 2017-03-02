@@ -57,6 +57,8 @@ app.post '/', (req, res) ->
             console.error(err)
             res.status(400).json
                 message: err
+                stdout: stdout
+                stderr: stderr
         else
             res.json
                 url: stdout.trim()
