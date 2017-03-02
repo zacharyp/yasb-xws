@@ -14,8 +14,6 @@ casper.start 'https://geordanr.github.io/xwing', ->
     @click '.import-xws'
 .then ->
     @waitWhileVisible '.xws-content'
-    @waitUntilVisible '.discard'
-    @click '.discard'
 .then ->
     console.log @evaluate ->
         $('a.permalink:visible').attr('href')
