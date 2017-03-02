@@ -1,6 +1,7 @@
 casper = require('casper').create
     logLevel: 'debug'
-    waitTimeout: 10000
+    onWaitTimeout: () ->
+        true
     verbose: true
 system = require('system')
 
