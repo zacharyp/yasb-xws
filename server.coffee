@@ -67,7 +67,11 @@ app.post '/', (req, res) ->
 
 app.get '/juggler', (req, res) ->
     if req.query.f? and req.query.d?
-        xws_obj = xws.serializedToXWS req.query.f, req.query.d
+        xws_obj = xws.serializedToXWS
+            faction: req.query.f
+            serialized: req.query.d
+            name: req.query.sn ? 'Unnamed'
+            obstacles: req.query.obs
         res.render 'juggler',
             last_tourney_id: req.session.tourney_id ? ''
             last_email: req.session.email ? ''
