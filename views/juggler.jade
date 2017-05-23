@@ -5,9 +5,9 @@ html
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title YASB to List Juggler Import
-    link(href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
-    link(href="select2/select2.css" rel="stylesheet")
-    link(href="fontawesome/css/font-awesome.min.css" rel="stylesheet")
+    link(href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
+    link(href="/select2/select2.css" rel="stylesheet")
+    link(href="/fontawesome/css/font-awesome.min.css" rel="stylesheet")
   body
     .container-fluid
       .row
@@ -44,10 +44,10 @@ html
       .row
         .col-xs-12
           button.btn.btn-block.btn-primary#add-list(style="margin-top: 10px;") Submit List to List Juggler
-    script(src="jquery/dist/jquery.min.js")
-    script(src="bootstrap/dist/js/bootstrap.min.js")
-    script(src="select2/select2.min.js")
-    script(src="yasb_xws.min.js")
+    script(src="/jquery/dist/jquery.min.js")
+    script(src="/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/select2/select2.min.js")
+    script(src="/yasb_xws.min.js")
     script.
       var juggler_api_url = '#{juggler_api_url}';
       var last_tourney_id = '#{last_tourney_id}';
