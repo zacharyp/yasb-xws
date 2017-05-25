@@ -93,7 +93,7 @@ class exportObj.ListJugglerAPI
                                         players: [
                                             {
                                                 name: player_name
-                                                xws: xws
+                                                list: xws
                                             }
                                         ]
                                 .done =>

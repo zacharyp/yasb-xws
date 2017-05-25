@@ -141,7 +141,7 @@ exportObj.ListJugglerAPI = (function() {
                       players: [
                         {
                           name: player_name,
-                          xws: xws
+                          list: xws
                         }
                       ]
                     })
