@@ -109,7 +109,7 @@ class exportObj.ListJugglerAPI
                                     contentType: 'application/json'
                                     data: JSON.stringify
                                         api_token: api_token
-                                        xws: xws
+                                        list: xws
                                 .done =>
                                     @updateSessionAndRedirect tourney_id, email
                                 .fail (jqXHR, textStatus, errorThrown) ->

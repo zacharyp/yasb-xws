@@ -158,7 +158,7 @@ exportObj.ListJugglerAPI = (function() {
                     contentType: 'application/json',
                     data: JSON.stringify({
                       api_token: api_token,
-                      xws: xws
+                      list: xws
                     })
                   }).done(function() {
                     return _this.updateSessionAndRedirect(tourney_id, email);
