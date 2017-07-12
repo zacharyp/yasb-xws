@@ -24,9 +24,6 @@
     "type": "git",
     "url": "https://github.com/geordanr/yasb-xws.git"
   },
-  "engines": {
-    "node": "0.10.x"
-  },
   "devDependencies": {
     "bower": "^1.4.1",
     "grunt": "^0.4.5",
