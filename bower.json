@@ -1,9 +1,10 @@
 {
   "name": "xwing-xws",
   "version": "1.0.0",
-  "homepage": "https://github.com/geordanr/yasb-xws",
+  "homepage": "https://github.com/zacharyp/yasb-xws",
   "authors": [
-    "Geordan Rosario <geordan@gmail.com>"
+    "Geordan Rosario <geordan@gmail.com>",
+    "Zachary Pitts <zacharyp@gmail.com>"
   ],
   "description": "YASB permalink to XWS backend",
   "main": "server.coffee",

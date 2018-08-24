@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/geordanr/yasb-xws.git"
+    "url": "https://github.com/zacharyp/yasb-xws.git"
   },
   "devDependencies": {
     "bower": "^1.4.1",
