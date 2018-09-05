@@ -63,8 +63,8 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         
         try
             pilot =
-                id: ship.pilot.canonical_name ? ship.pilot.name.canonicalize()
-                ship: shipdata.canonical_name ? shipdata.name.canonicalize()
+                id: ship.pilot.xws ? ship.pilot.canonical_name ? ship.pilot.name.canonicalize()
+                ship: shipdata.xws ? shipdata.canonical_name ? shipdata.name.canonicalize()
         catch e
             console.error "Cannot set pilot and ship: #{e}"
             continue
@@ -80,21 +80,21 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
                 continue
 
             try
-                (upgrade_obj[slot] ?= []).push(upgrade.canonical_name ? upgrade.name.canonicalize())
+                (upgrade_obj[slot] ?= []).push(upgrade.xws ? upgrade.canonical_name ? upgrade.name.canonicalize())
             catch e
                 console.error "Cannot add upgrade: #{e}"
                 continue
 
         for modification in ship.modifications
             try
-                (upgrade_obj[toXWSUpgrade['Modification']] ?= []).push(modification.canonical_name ? modification.name.canonicalize())
+                (upgrade_obj[toXWSUpgrade['Modification']] ?= []).push(modification.xws ? modification.canonical_name ? modification.name.canonicalize())
             catch e
                 console.error "Cannot add modification: #{e}"
                 continue
 
         if ship.title?
             try
-                (upgrade_obj.title ?= []).push(ship.title.canonical_name ? ship.title.name.canonicalize())
+                (upgrade_obj.title ?= []).push(ship.title.xws ? ship.title.canonical_name ? ship.title.name.canonicalize())
             catch e
                 console.error "Cannot add title: #{e}"
                 continue
