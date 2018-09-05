@@ -4,30 +4,33 @@ permalink = require './permalink'
 XWS_VERSION = '0.3.0'
 
 fromXWSFaction =
-    'rebel': 'Rebel Alliance'
+    'rebelalliance': 'Rebel Alliance'
     'rebels': 'Rebel Alliance'
-    'empire': 'Galactic Empire'
+    'galacticempire': 'Galactic Empire'
     'imperial': 'Galactic Empire'
-    'scum': 'Scum and Villainy'
+    'scumandvillainy': 'Scum and Villainy'
+    'firstorder': 'First Order'
+    'resistance': 'Resistance'
 
 toXWSFaction =
-    'Rebel Alliance': 'rebel'
-    'Galactic Empire': 'imperial'
-    'Scum and Villainy': 'scum'
+    'Rebel Alliance': 'rebelalliance'
+    'Galactic Empire': 'galacticempire'
+    'Scum and Villainy': 'scumandvillainy'
+    'First Order': 'firstorder'
+    'Resistance': 'resistance'
 
 toXWSUpgrade =
     'Astromech': 'amd'
-    'Elite': 'ept'
+    'Talent': 'ept'
     'Modification': 'mod'
-    'Salvaged Astromech': 'samd'
 
 fromXWSUpgrade =
     'amd': 'Astromech'
     'astromechdroid': 'Astromech'
-    'ept': 'Elite'
-    'elitepilottalent': 'Elite'
+    'ept': 'Talent'
+    'elitepilottalent': 'Talent'
+    'system': 'Sensor'
     'mod': 'Modification'
-    'samd': 'Salvaged Astromech'
 
 exportObj = exports ? this
 
@@ -60,7 +63,7 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         
         try
             pilot =
-                name: ship.pilot.canonical_name ? ship.pilot.name.canonicalize()
+                id: ship.pilot.canonical_name ? ship.pilot.name.canonicalize()
                 ship: shipdata.canonical_name ? shipdata.name.canonicalize()
         catch e
             console.error "Cannot set pilot and ship: #{e}"

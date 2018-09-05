@@ -1,0 +1,7 @@
+list heroku apps:
+heroku apps
+
+pushing latest to heroku:
+git push heroku master
+
+
