@@ -41,7 +41,7 @@ app.get '/', (req, res) ->
           name: req.query.sn
           obstacles: req.query.obs
         }
-        xws_obj.vendor.yasb.link = "https://raithos.github.io/xwing#{req.originalUrl}"
+        xws_obj.vendor.yasb.link = "https://raithos.github.io#{req.originalUrl}"
         res.json xws_obj
     else
         res.json

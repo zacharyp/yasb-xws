@@ -38,8 +38,8 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         vendor:
             yasb:
                 builder: '(Yet Another) X-Wing Miniatures Squad Builder'
-                builder_url: 'https://raithos.github.io/xwing'
-                link: 'https://raithos.github.io/xwing'
+                builder_url: 'https://raithos.github.io'
+                link: 'https://raithos.github.io'
         version: XWS_VERSION
 
     if name?.length and ['Unnamed Squadron', 'New Squadron'].indexOf(name) == -1
