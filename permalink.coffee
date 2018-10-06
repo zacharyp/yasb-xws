@@ -3,16 +3,10 @@ cards = require('./xwing/coffeescripts/cards-common').basicCardData()
 exportObj = exports ? this
 
 SERIALIZATION_CODE_TO_MAP =
-    'M': cards.modificationsById
-    'm': cards.modificationsById
-    'T': cards.titlesById
     'U': cards.upgradesById
     'u': cards.upgradesById
 
 SERIALIZATION_CODE_TO_SLOT =
-    'M': 'mod'
-    'm': 'mod'
-    'T': 'title'
     'U': 'upgrade'
     'u': 'upgrade'
 
@@ -24,7 +18,7 @@ exportObj.serializedToShips = (faction, serialized) ->
         # versioned
         version = parseInt matches[1]
         switch version
-            when 3, 4
+            when 3, 4, 5
                 [ game_type_abbrev, serialized_ships ] = matches[2].split('!')
                 for serialized_ship in serialized_ships.split(';')
                     unless serialized_ship == ''
@@ -84,9 +78,12 @@ fromSerialized = (version, serialized) ->
             catch e
                 ''
 
-        when 2, 3, 4
+        when 2, 3, 4, 5
             # PILOT_ID:UPGRADEID1,UPGRADEID2:TITLEID:MODIFICATIONID:CONFERREDADDONTYPE1.CONFERREDADDONID1,CONFERREDADDONTYPE2.CONFERREDADDONID2
-            [ pilot_id, upgrade_ids, title_id, modification_id, conferredaddon_pairs ] = serialized.split ':'
+            if (serialized.split ':').length == 3
+                [ pilot_id, upgrade_ids, conferredaddon_pairs ] = serialized.split ':'
+            else
+                [ pilot_id, upgrade_ids, version_4_compatibility_placeholder_title, version_4_compatibility_placeholder_mod, conferredaddon_pairs ] = serialized.split ':'
             try
                 ship.pilot = cards.pilotsById[parseInt(pilot_id)]
             catch e
@@ -98,18 +95,6 @@ fromSerialized = (version, serialized) ->
                     ship.upgrades.push(cards.upgradesById[upgrade_id]) if upgrade_id >= 0
                 catch e
                     ''
-
-            try
-                title_id = parseInt title_id
-                ship.title = cards.titlesById[title_id] if title_id >= 0
-            catch e
-                ''
-
-            try
-                modification_id = parseInt modification_id
-                ship.modifications.push(cards.modificationsById[modification_id]) if modification_id >= 0
-            catch e
-                ''
 
             if conferredaddon_pairs?
                 conferredaddon_pairs = conferredaddon_pairs.split ','

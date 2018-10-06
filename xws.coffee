@@ -1,11 +1,12 @@
 cards = require('./xwing/coffeescripts/cards-common').basicCardData()
 permalink = require './permalink'
 
-XWS_VERSION = '0.3.0'
+XWS_VERSION = '2.0.0'
 
 fromXWSFaction =
     'rebelalliance': 'Rebel Alliance'
     'rebels': 'Rebel Alliance'
+    'rebel': 'Rebel Alliance'
     'galacticempire': 'Galactic Empire'
     'imperial': 'Galactic Empire'
     'scumandvillainy': 'Scum and Villainy'
@@ -20,8 +21,6 @@ toXWSFaction =
     'Resistance': 'resistance'
 
 toXWSUpgrade =
-    'Astromech': 'amd'
-    'Talent': 'ept'
     'Modification': 'mod'
 
 fromXWSUpgrade =
