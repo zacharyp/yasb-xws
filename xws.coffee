@@ -45,12 +45,12 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         version: XWS_VERSION
 
     if name?.length and ['Unnamed Squadron', 'New Squadron'].indexOf(name) == -1
-      xws.name = name
+        xws.name = name
 
     if obstacles?
-      obs = obstacles.split(',')
-      if obs.length == 3
-        xws.obstacles = obs
+        obs = obstacles.split(',')
+        if obs.length == 3
+            xws.obstacles = obs
 
     for ship in permalink.serializedToShips faction, serialized
         continue unless ship?.pilot?
@@ -59,11 +59,12 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         catch e
             console.error "Unknown ship: #{e}"
             continue
-        
+
         try
             pilot =
                 id: ship.pilot.xws ? ship.pilot.canonical_name ? ship.pilot.name.canonicalize()
                 ship: shipdata.xws ? shipdata.canonical_name ? shipdata.name.canonicalize()
+                points: ship.pilot.points ? 0
         catch e
             console.error "Cannot set pilot and ship: #{e}"
             continue
@@ -80,6 +81,10 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
 
             try
                 (upgrade_obj[slot] ?= []).push(upgrade.xws ? upgrade.canonical_name ? upgrade.name.canonicalize())
+
+                upgrade_points = getUpgradePoints(upgrade, shipdata)
+                if upgrade_points?
+                    pilot.points = pilot.points + upgrade_points
             catch e
                 console.error "Cannot add upgrade: #{e}"
                 continue
@@ -104,3 +109,16 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
         xws.pilots.push pilot
 
     xws
+
+# hackily copied from xwing GenericAddon getPoints
+getUpgradePoints = (upgrade, ship) ->
+    if upgrade?.variableagility? and ship?
+        Math.max(upgrade?.basepoints ? 0, (upgrade?.basepoints ? 0) + ((ship.agility - 1) * 2) + 1)
+    else if upgrade?.variablebase? and not (ship.medium? or ship.large?)
+        Math.max(0, upgrade?.basepoints)
+    else if upgrade?.variablebase? and ship?.medium?
+        Math.max(0, (upgrade?.basepoints ? 0) + (upgrade?.basepoints))
+    else if upgrade?.variablebase? and ship?.large?
+        Math.max(0, (upgrade?.basepoints ? 0) + (upgrade?.basepoints * 2))
+    else
+        upgrade?.points ? 0
