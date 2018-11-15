@@ -18,3 +18,9 @@ that will take the permalink and spit out the XWS for it.
 This is necessary to keep the card list up to date with the builder.
 
     git submodule foreach git pull origin master
+
+
+If using the heroku git plugin, to deploy:
+
+    git push heroku master
+
