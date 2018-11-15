@@ -37,6 +37,7 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
     xws =
         faction: toXWSFaction[faction]
         pilots: []
+        points: 0
         vendor:
             yasb:
                 builder: '(Yet Another) X-Wing Miniatures Squad Builder'
@@ -107,6 +108,10 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
             pilot.upgrades = upgrade_obj
 
         xws.pilots.push pilot
+
+    for pilot in xws.pilots 
+        if pilot.points?
+            xws.points = xws.points + pilot.points
 
     xws
 
