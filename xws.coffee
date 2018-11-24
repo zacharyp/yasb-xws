@@ -21,7 +21,7 @@ toXWSFaction =
     'Resistance': 'resistance'
 
 toXWSUpgrade =
-    'Modification': 'mod'
+    'Modification': 'modification'
 
 fromXWSUpgrade =
     'amd': 'Astromech'
@@ -109,7 +109,7 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
 
         xws.pilots.push pilot
 
-    for pilot in xws.pilots 
+    for pilot in xws.pilots
         if pilot.points?
             xws.points = xws.points + pilot.points
 
