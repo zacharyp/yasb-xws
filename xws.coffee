@@ -22,6 +22,7 @@ toXWSFaction =
 
 toXWSUpgrade =
     'Modification': 'modification'
+    'Force': 'force-power'
 
 fromXWSUpgrade =
     'amd': 'Astromech'
