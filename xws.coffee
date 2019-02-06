@@ -84,7 +84,8 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
             try
                 (upgrade_obj[slot] ?= []).push(upgrade.xws ? upgrade.canonical_name ? upgrade.name.canonicalize())
 
-                upgrade_points = getUpgradePoints(upgrade, shipdata)
+                skill = ship.pilot.skill ? 0
+                upgrade_points = getUpgradePoints(upgrade, shipdata, skill)
                 if upgrade_points?
                     pilot.points = pilot.points + upgrade_points
             catch e
@@ -117,7 +118,7 @@ exportObj.serializedToXWS = ({faction, serialized, name, obstacles}) ->
     xws
 
 # hackily copied from xwing GenericAddon getPoints
-getUpgradePoints = (upgrade, ship) ->
+getUpgradePoints = (upgrade, ship, skill) ->
     if upgrade?.variableagility? and ship?
         Math.max(upgrade?.basepoints ? 0, (upgrade?.basepoints ? 0) + ((ship.agility - 1) * 2) + 1)
     else if upgrade?.variablebase? and not (ship.medium? or ship.large?)
@@ -126,5 +127,7 @@ getUpgradePoints = (upgrade, ship) ->
         Math.max(0, (upgrade?.basepoints ? 0) + (upgrade?.basepoints))
     else if upgrade?.variablebase? and ship?.large?
         Math.max(0, (upgrade?.basepoints ? 0) + (upgrade?.basepoints * 2))
+    else if upgrade?.variableinit?
+        Math.max(0, upgrade?.pointsarray[skill])
     else
         upgrade?.points ? 0
