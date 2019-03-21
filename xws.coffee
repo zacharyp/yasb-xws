@@ -19,6 +19,8 @@ toXWSFaction =
     'Scum and Villainy': 'scumandvillainy'
     'First Order': 'firstorder'
     'Resistance': 'resistance'
+    'Galactic Republic': 'galacticrepublic'
+    'Separatist Alliance': 'separatistalliance'
 
 toXWSUpgrade =
     'Modification': 'modification'
