@@ -7,13 +7,14 @@ async function covert_xws(xwsString) {
             defaultViewport: {
                 width: 1100,
                 height: 800
-            }
+            },
+            args: ['--no-sandbox']
         }
     )
     var page = await browser.newPage()
 
-//    await page.goto("file://" + __dirname + "/app/index.html")
-    await page.goto("https://raithos.github.io/")
+    await page.goto("file://" + __dirname + "/app/index.html")
+//    await page.goto("https://raithos.github.io/")
     await page.waitForSelector(".from-xws")
 
     page.click('.from-xws')

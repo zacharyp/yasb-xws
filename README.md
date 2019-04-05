@@ -22,5 +22,8 @@ This is necessary to keep the card list up to date with the builder.
 
 If using the heroku git plugin, to deploy:
 
+    ### Needed for Puppeteer
+    heroku buildpacks:set jontewks/puppeteer
+
     git push heroku master
 
