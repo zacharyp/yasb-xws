@@ -5,9 +5,9 @@ on GitHub pages, it can't arbitrarily respond to a request with
 `application/json` (as far as I know).  So instead, here's an endpoint
 that will take the permalink and spit out the XWS for it.
 
-## Building
+## install dependencies
 
-    grunt
+    npm install
 
 ## Running the server
 

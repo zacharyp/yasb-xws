@@ -2,3 +2,4 @@
 _vimrc_local.vim
 coffeelint.json
 node_modules
+.idea
