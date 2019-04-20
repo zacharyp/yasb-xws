@@ -26,6 +26,10 @@ app.get '/', (req, res) ->
           obstacles: req.query.obs
         }
         xws_obj.vendor.yasb.link = "https://raithos.github.io#{req.originalUrl}"
+
+        res.header("Access-Control-Allow-Origin", "*");
+        res.type('application/json')
+
         res.json xws_obj
     else
         res.json
@@ -35,6 +39,9 @@ app.post '/reverse', (req, res) ->
     try
         xwsString = JSON.stringify(req.body);
         result = await xws_yasb.covert_xws(xwsString)
+
+        res.header("Access-Control-Allow-Origin", "*");
+        res.type('application/json')
 
         res.json
             url: result
