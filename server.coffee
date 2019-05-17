@@ -35,6 +35,12 @@ app.get '/', (req, res) ->
         res.json
             message: "Put YASB permalink query string in URL"
 
+app.get '/privacy', (req, res) ->
+    res.sendFile(path.join(__dirname + '/app/privacy.html'))
+
+app.get '/anonymize', (req, res) ->
+    res.sendFile(path.join(__dirname + '/app/anonymize.html'))
+
 app.post '/reverse', (req, res) ->
     try
         xwsString = JSON.stringify(req.body);

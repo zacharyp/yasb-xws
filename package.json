@@ -6,7 +6,7 @@
   "scripts": {
     "start": "coffee server.coffee"
   },
-  "author": "Geordan Rosario <geordan@gmail.com>",
+  "author": "Zachary Pitts <zacharyp@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.12.2",

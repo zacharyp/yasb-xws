@@ -1,0 +1,71 @@
+<html>
+<head>
+    <script>
+
+        function getRawInput() {
+            return document.getElementById("input_text").value;
+        }
+
+        function anonymize(input) {
+            var obj = JSON.parse(input);
+
+            var tournament = obj.tournament;
+            var players = tournament.players;
+
+            var nameMap = new Map();
+
+            for (var i = 0; i < players.length; i++){
+                var player = players[i];
+                var newName = "name" + i.toString();
+                nameMap.set(player.name, newName);
+                player.name = newName;
+            }
+
+            var rounds = tournament.rounds;
+
+            for (var x = 0; x < rounds.length; x++){
+                var matches = rounds[x].matches;
+                for (var j = 0; j < matches.length; j++){
+                    var match = matches[j];
+                    var newPlayer1 = nameMap.get(match.player1);
+                    var newPlayer2 = nameMap.get(match.player2);
+                    match.player1 = newPlayer1;
+                    match.player2 = newPlayer2;
+                }
+            }
+
+            var output = JSON.stringify(obj);
+            return output;
+        }
+
+        function setOutput(value) {
+            document.getElementById("output_text").innerHTML = value;
+        }
+
+        window.onload=function(){
+            document.getElementById("anonymize_button").addEventListener("click", function(){
+                var raw = getRawInput();
+                var anon = anonymize(raw);
+                setOutput(anon);
+            });
+        };
+    </script>
+</head>
+<body>
+
+<p>
+    Enter cryodex JSON here:
+</p>
+<p>
+    <textarea id="input_text" rows="4" cols="80"></textarea>
+    <button type="button" id="anonymize_button">Anonymize JSON!</button>
+</p>
+<p>
+    Anonymized version:
+</p>
+<p>
+    <textarea readonly id="output_text" rows="4" cols="80"></textarea>
+</p>
+
+</body>
+</html>
