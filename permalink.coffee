@@ -18,15 +18,16 @@ exportObj.serializedToShips = (faction, serialized) ->
         # versioned
         version = parseInt matches[1]
         switch version
-            when 3, 4, 5, 6
-                [ game_type_abbrev, serialized_ships ] = matches[2].split('!')
-                for serialized_ship in serialized_ships.split(';')
-                    unless serialized_ship == ''
-                        ships.push fromSerialized(version, serialized_ship)
             when 2
                 for serialized_ship in matches[2].split(';')
                     unless serialized_ship == ''
                         ships.push (fromSerialized version, serialized_ship)
+#            when 3, 4, 5, 6, 7
+            else
+                [ game_type_abbrev, serialized_ships ] = matches[2].split('!')
+                for serialized_ship in serialized_ships.split(';')
+                    unless serialized_ship == ''
+                        ships.push fromSerialized(version, serialized_ship)
     else
         # v1 (unversioned)
         for serialized_ship in serialized.split(';')
@@ -78,7 +79,8 @@ fromSerialized = (version, serialized) ->
             catch e
                 ''
 
-        when 2, 3, 4, 5, 6
+#        when 2, 3, 4, 5, 6, 7
+        else
             # PILOT_ID:UPGRADEID1,UPGRADEID2:TITLEID:MODIFICATIONID:CONFERREDADDONTYPE1.CONFERREDADDONID1,CONFERREDADDONTYPE2.CONFERREDADDONID2
             if (serialized.split ':').length == 3
                 [ pilot_id, upgrade_ids, conferredaddon_pairs ] = serialized.split ':'
