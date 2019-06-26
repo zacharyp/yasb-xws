@@ -1,6 +1,6 @@
 [submodule "xwing"]
 	path = xwing
-	url = https://github.com/raithos/xwing
+	url = https://github.com/zacharyp/xwing
 
 [submodule "xwing-data2"]
 	path = xwing-data2
