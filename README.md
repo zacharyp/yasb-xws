@@ -7,7 +7,7 @@ that will take the permalink and spit out the [XWS](https://github.com/elisteven
 
 # yasb permalink to XWS
 
-Take a [YASB](https://raithos.github.io/) permalink URL path, example `?f=Scum%20and%20Villainy&d=v6!h=200!147:124,111,,165,163:U.-1;103:,,,55,69,,,161:U.-1&sn=Guri%20Boba`, and use this to construct a GET request to:
+Take a [YASB](https://raithos.github.io/) permalink URL path, example `?f=Scum%20and%20Villainy&d=v8ZsZ200Z103X121WWW54WWWW161WY147X126W111WW165W163W&sn=Boba%20Guri`, and use this to construct a GET request to:
 ```
 http://yasb2-xws.herokuapp.com/?f=Scum%20and%20Villainy&d=v6!h=200!147:124,111,,165,163:U.-1;103:,,,55,69,,,161:U.-1&sn=Guri%20Boba&obs=
 ```
