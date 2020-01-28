@@ -1,3 +1,8 @@
+# PROJECT IS DEPRECATED
+
+Use https://github.com/zacharyp/squad2xws instead
+
+
 # YASB permalink to XWS endpoint
 
 Since raithos hosts [Yet Another X-Wing Squad Builder](https://raithos.github.io/xwing)
